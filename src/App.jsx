@@ -1,43 +1,14 @@
-import { useState, useEffect } from "react"
 import './App.css'
-import { getRandomFact } from "./services/facts"
-
-// customHooks
-function useCatImage({ fact }) {
-  const [imageUrl, setImageUrl] = useState('url')
-
-  useEffect(() => {
-    if (!fact) return;
-
-    const threeFirstWord = fact.split(' ', 3).join(' ');
-    console.log(threeFirstWord)
-
-    fetch(`https://cataas.com/cat/says/${threeFirstWord}?fontSize=50&fontColor=red&json=true`)
-      .then(res => res.json())
-      .then(data => {
-        const { url } = data;
-        setImageUrl(url);
-      })
-  }, [fact])
-
-  return { imageUrl };
-}
+import { useCatFact } from './hooks/useCatFact'
+import { useCatImage } from './hooks/useCatImage'
 
 function App() {
-  const [fact, setFact] = useState('initial test data')
+  const { fact, refreshFact } = useCatFact()
   const { imageUrl } = useCatImage({ fact })
 
-
   const handleClick = async () => {
-    const newFact = await getRandomFact();
-    setFact(newFact)
+    refreshFact()
   }
-
-  useEffect(() => {
-    getRandomFact().then(newFact => setFact(newFact))
-  }, [])
-
-
 
   return (
     <main style={{ display: 'flex', flexDirection: 'column', placeItems: 'center', maxWidth: '400px', margin: '0 auto' }}>
