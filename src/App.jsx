@@ -2,18 +2,9 @@ import { useState, useEffect } from "react"
 import './App.css'
 import { getRandomFact } from "./services/facts"
 
-function App() {
-  const [fact, setFact] = useState('initial test data')
+// customHooks
+function useCatImage({ fact }) {
   const [imageUrl, setImageUrl] = useState('url')
-
-  const handleClick = async () => {
-    const newFact = await getRandomFact();
-    setFact(newFact)
-  }
-
-  useEffect(() => {
-    getRandomFact().then(newFact => setFact(newFact))
-  }, [])
 
   useEffect(() => {
     if (!fact) return;
@@ -28,6 +19,25 @@ function App() {
         setImageUrl(url);
       })
   }, [fact])
+
+  return { imageUrl };
+}
+
+function App() {
+  const [fact, setFact] = useState('initial test data')
+  const { imageUrl } = useCatImage({ fact })
+
+
+  const handleClick = async () => {
+    const newFact = await getRandomFact();
+    setFact(newFact)
+  }
+
+  useEffect(() => {
+    getRandomFact().then(newFact => setFact(newFact))
+  }, [])
+
+
 
   return (
     <main style={{ display: 'flex', flexDirection: 'column', placeItems: 'center', maxWidth: '400px', margin: '0 auto' }}>
