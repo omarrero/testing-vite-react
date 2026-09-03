@@ -12,7 +12,7 @@ function App() {
   }
 
   useEffect(() => {
-    getRandomFact().then(setFact)
+    getRandomFact().then(newFact => setFact(newFact))
   }, [])
 
   useEffect(() => {
