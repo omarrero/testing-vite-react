@@ -7,14 +7,16 @@ function App() {
   const [fact, setFact] = useState('initial test data')
   const [imageUrl, setImageUrl] = useState('url')
 
-  useEffect(() => {
+  const getRandomFact = () => {
     fetch(CAT_ENDPOINT_RANDOM_FACT)
       .then(res => res.json())
       .then(data => {
         const { fact } = data;
         setFact(fact)
       })
-  }, [])
+  }
+
+  useEffect(getRandomFact, [])
 
   useEffect(() => {
     if (!fact) return;
@@ -33,6 +35,7 @@ function App() {
   return (
     <main style={{ display: 'flex', flexDirection: 'column', placeItems: 'center', maxWidth: '400px', margin: '0 auto' }}>
       <h1>App de gatitos</h1>
+      <button onClick={getRandomFact}>reload</button>
       {fact && <p>{fact}</p>}
       {imageUrl && <img src={imageUrl} alt={`cat image for ${fact}`} />}
     </main>
